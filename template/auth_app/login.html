@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'auth/login.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="container">
+            
+            <div class="right-side">
+                <h1>Hello Guys!</h1>
+                <p>Login to your account</p>
+                <form action="" method="POST" class="login-details">
+                    {% csrf_token %}
+                    <label for="username" class="label">Username</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+
+                    <label for="password" class="label">Password</label>
+                    {{ form.password }}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert">
+                            <h6>{{message}}</h6>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="forget">
+                        <div class="remember">
+                            <input type="checkbox" id="check" name="remember_me">
+                            <label for="check">Remember Me</label>
+                        </div>
+
+                        <div class="forget-password">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+
+                <div class="create-new">
+                    <a href="#">Create Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

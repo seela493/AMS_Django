@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'auth/admin.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-box">
+            <ul>
+                <li><a href="#" class="logo">
+                    <img src="{% static "images/logo.jpg" %}" alt="logo">
+                    <span class="nav-item">Dashboard</span>
+                    </a>
+                </li>
+                <li><a href="#">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="nav-item">Home</span>
+                <a/></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-address-card"></i>    
+                    <span class="nav-item">User Registration</span>
+                <a/></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <span class="nav-item"> Add Teacher</span>
+                <a/></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span class="nav-item">Add Course</span>
+                <a/></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span class="nav-item">Add Student</span>
+                <a/></li>
+                <li><a href="#">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="nav-item">Add Student Class</span>
+                <a/></li>
+                <li><a href="#" class="logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="nav-item">logout</span>
+                <a/></li>
+            </ul>
+        </nav>
+
+        <section class="site-main">
+            <div class="top">
+                <h2>Teachers</h2>
+                
+                <div class="card">
+                    <img src="" alt="teacher image">
+                    <div class="teacher-details">
+                    <h5>Teacher NAME</h5>
+                    <h5>Teacher DOB</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="student-list">
+                <h2>Student list</h2>
+                <div class="student-details">
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                                <th>Enrolled Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Student ID</td>
+                            <td>Student Name</td>
+                            <td>Student Age</td>
+                            <td>Student Address</td>
+                            <td>Student Phone Number</td>
+                            <td>Enrolled Date</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="last-main">
+            <h2>Upcoming Course</h2>
+
+            <div class="course-box">
+                <div class="course">
+                    <div class="box">
+                        <h3>HTML</h3>
+                        <br>
+                        <h5>Full course on HTML from Scratch</h5>
+                        <i class="fa-brands fa-html5" style="color: #74C0FC;"></i>
+                    </div>
+                    <div class="box">
+                        <h3>JAVA</h3>
+                        <br>
+                        <h5>Full course on JAVA from Scratch</h5>
+                        <i class="fa-brands fa-java" style="color: #5d28fb;"></i>
+                    </div>
+                    <div class="box">
+                        <h3>Python</h3>
+                        <br>
+                        <h5>Full course on Python from Scratch</h5>
+                        <i class="fa-brands fa-python" style="color: #3858f5;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
