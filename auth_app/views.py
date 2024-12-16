@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, TeacherForm
 from django.contrib.auth.models import User
 
 def login_home(request):
@@ -18,87 +19,72 @@ def login_home(request):
                     messages.success(request, "You have successfully logged in Admin!")
                     return redirect('admin')
                 else:
-                    print("Not Admin")
+                    print(form.errors)
                     return redirect('login')
                 
-            else:
+            else:   
                 messages.warning(request, 'Invalid username or password')
 
         else:
+            print(form.errors)
             messages.error(request, 'Form is invalid')
     else:
         form = LoginForm()  # Initialize the form for GET requests (page load)
     return render(request, 'auth_app/login.html', {'form': form})
 
-# def login_home(request):
-#     next = request.GET.get('next')
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-
-#         print("Post Request Form")
-#         # print(form)
-
-#         if form.is_valid():
-#             print(form.cleaned_data)
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 print("User is authenticated")
-#                 login(request, user)
-#                 if user.is_superuser:
-#                     return redirect('admin')
-#                 # return redirect(next if next else 'admin-page-name')
-#                 else:
-#                     print("Not Admin")
-#                     return redirect('login')
-#             else:
-#                 print("User is not authenticated")
-#         else:
-#             print("Form is invalid")
-#     else: 
-#         form = LoginForm()
-#         print(f"Get Request Form")
-#         # print(form
-
-#     return render(request, 'auth_app/login.html', {'form': form})   
-
-
+@login_required
 def admin_page(request):
     return render(request,'auth_app/admin.html')
 
+@login_required
 def logout_page(request):
     logout(request)
     return redirect('login')
 
-
+@login_required
 def register_page(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            firstname = form.cleaned_data.get('firstname')
-            lastname = form.cleaned_data.get('lastname')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
             email= form.cleaned_data.get('email')
             username = form.cleaned_data.get('username')
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
 
-            if password1 != password2:
-                messages.error(request,"The Password does not match")
-                return redirect('register')
-            if len(password1 & password2 >8):
-                messages.error(request,"The length of the password should be atleast more than 8")
-                return redirect('register')
-
-            user= User.object.create_user(username=username,email=email,password=password1)
-            user.save()
-
+            user= User.objects.create_user(username=username,email=email,password=password1, first_name=first_name, last_name=last_name,)    
             messages.success(request, "User has been successfully registered! Please Login")
+            user.save()
             return redirect('login')
-        
-        else:
-            messages.error(request, "Form is invalid")
-            form = RegisterForm()
     else:
         form = RegisterForm()
-    return render(request, 'auth_app/register.html')
+    return render(request, 'auth_app/register.html',{'form':form})
+
+@login_required 
+def teacher_detail(request):
+    user_list = User.objects.exclude(is_superuser=True)
+    print(user_list)
+    if request.method == 'POST':
+        form  = TeacherForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("Cleaned Data")
+            print("********")
+            print(form.cleaned_data)
+            user = form.cleaned_data['teacher']
+            address = form.cleaned_data['address']
+            primary_number = form.cleaned_data['primary_number']
+            secondary_number = form.cleaned_data['secondary_number']
+            dob = form.cleaned_data['dob']
+            sex = form.cleaned_data['sex']
+            image = form.cleaned_data['image']
+            Teacher.objects.create(user=user, address=address, primary_number=primary_number, secondary_number=secondary_number,dob=dob, sex=sex,image=image)
+            messages.success(request, "Teacher has been successfully added!")
+
+
+
+            form.save()
+    else:
+        form=TeacherForm()
+    return render(request, 'auth_app/teacher.html', {'teachers': user_list, 'form':form})
+

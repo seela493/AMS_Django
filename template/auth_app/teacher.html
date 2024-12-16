@@ -1,0 +1,80 @@
+{% extends "base/base.html" %}
+{% load static %}
+<title>{% block title %}Teacher Details{% endblock title %}</title>
+{% block link %}
+<link rel="stylesheet" href="{% static 'auth/teacherDetail.css' %}">
+{% endblock link %}
+
+{% block navlist %}{{ block.super }}{% endblock navlist %}
+
+{% block content %}
+<div class="main-container">
+    <h2>Teacher Details</h2>
+    <form action="" method="POST" class="registration-form" enctype="multipart/form-data"> 
+        <!-- e use multipart/form-data to handle file uploads and also it convert image in to binary so that http can it will be easy to data transfer -->
+        {% csrf_token %}
+        <div class="teacher-details">
+            <div class="input-box"> 
+                <label for="teacher">Teacher:</label>
+                {{ form.teacher }}
+                <!-- <select name="teachers-list" id="teachers-list" class="teacher-list" required>
+                    {% for teacher in teachers %}
+                    <option value="{{teacher.id}}">{{teacher.username}}</option>
+                    {% endfor %}
+                    
+                </select> -->
+                
+            </div>
+            <div class="input-box">
+                <label for="address">Address</label>
+                <!-- <input type="text" placeholder="Enter your address" required name="address"> -->
+                {{ form.address }}
+            </div>
+            <div class="input-box">
+                <label for="primary-number">Primary Number</label>
+                <!-- <input type="text" placeholder="Enter your number" required name="primary_number" maxlength="10" minlength="10"> -->
+                 {{form.primary_number}}
+            </div>
+            <div class="input-box">
+                <label for="secondary-number">Secondary Number</label>
+                <!-- <input type="text" placeholder="Enter your number" required name="secondary_number" maxlength="10" minlength="10"> -->
+                {{form.secondary_number}}
+            </div>
+            <div class="input-box">
+                <label for="dob">Date of Birth</label>
+                <!-- <input type="date" placeholder="Enter your number" required name="primary_number" maxlength="10" > -->
+                {{form.dob}}
+            </div>
+
+
+            <div class="input-box">
+                <label for="gender">Gender</label>
+                <!-- <select name="sex" id="teacher-details" required>
+                    <option value="M" selected>Male</option>
+                    <option value="F">Female</option>
+                </select> -->
+                {{form.sex}}
+            </div>
+            <div class="input-box">
+                <div class="img">
+                    <label for="upload-image" class="choose-img">Upload Image</label>
+                    <!-- <input type="file" id="upload-image" name="choose-img" class="img" style="display:none;"/> -->
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="message error-message">
+                <p>{{ message }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+    </form>
+
+    <!-- Display success or informational messages -->
+</div>
+{% endblock content %}
