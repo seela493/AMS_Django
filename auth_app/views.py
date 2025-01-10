@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import LoginForm, RegisterForm, TeacherForm
 from django.contrib.auth.models import User
+from .models import Teacher
 
 def login_home(request):
+    # Django Django987&
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -44,6 +46,7 @@ def logout_page(request):
 @login_required
 def register_page(request):
     if request.method == 'POST':
+        
         form = RegisterForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data.get('first_name')
@@ -65,8 +68,11 @@ def register_page(request):
 def teacher_detail(request):
     user_list = User.objects.exclude(is_superuser=True)
     print(user_list)
+    
     if request.method == 'POST':
-        form  = TeacherForm(request.POST, request.FILES)
+        print(request.POST)  # Debug: Print POST data
+        print(request.FILES)
+        form  = TeacherForm(request.POST, request.FILES)  
         if form.is_valid():
             print("Cleaned Data")
             print("********")
@@ -78,13 +84,24 @@ def teacher_detail(request):
             dob = form.cleaned_data['dob']
             sex = form.cleaned_data['sex']
             image = form.cleaned_data['image']
-            Teacher.objects.create(user=user, address=address, primary_number=primary_number, secondary_number=secondary_number,dob=dob, sex=sex,image=image)
-            messages.success(request, "Teacher has been successfully added!")
 
+            if Teacher.objects.filter(user = user).exist():
+                print("user already exists")
+                form.add_error('teacher', f'user with {user.username} already exists')
+            else:
+                Teacher.objects.create(user=user, address=address, primary_number=primary_number, secondary_number=secondary_number,dob=dob, sex=sex,image=image)
+                messages.success(request, "Teacher has been successfully added!")
+        else:
+            messages.error(request, "There was an error with the form. Please try again.")
+            print(form.errors)
 
-
-            form.save()
     else:
         form=TeacherForm()
     return render(request, 'auth_app/teacher.html', {'teachers': user_list, 'form':form})
+
+def teacher_image(request):
+    teacher = Teacher.objects.all()
+    for item in teacher:
+        print(item.image.url)
+    return render(request, 'auth_app/')
 

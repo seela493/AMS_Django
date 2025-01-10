@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+    {% extends "base/base.html" %}
 {% load static %}
 <title>{% block title %}Teacher Details{% endblock title %}</title>
 {% block link %}
@@ -17,6 +17,7 @@
             <div class="input-box"> 
                 <label for="teacher">Teacher:</label>
                 {{ form.teacher }}
+                {{ form.teacher.errors }}
                 <!-- <select name="teachers-list" id="teachers-list" class="teacher-list" required>
                     {% for teacher in teachers %}
                     <option value="{{teacher.id}}">{{teacher.username}}</option>
@@ -58,7 +59,8 @@
             <div class="input-box">
                 <div class="img">
                     <label for="upload-image" class="choose-img">Upload Image</label>
-                    <!-- <input type="file" id="upload-image" name="choose-img" class="img" style="display:none;"/> -->
+                    <input type="file" id="upload-image" name="image" class="choose-img" style="display:none;"/>
+                    <button type="button" onclick="document.getElementById('id_image').click()">Choose Image</button>
                 </div>
             </div>
         </div>

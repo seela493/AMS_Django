@@ -125,20 +125,21 @@ class TeacherForm(forms.Form):
 
         if not image:
             raise forms.ValidationError("No image uploaded. Please upload an image.")
-    
-        if image.size > 1024 * 1024:
-            raise forms.ValidationError("Image size is too large. Please choose a smaller image")
+        
+        if image:
+            if image.size > 1024 * 1024:
+                raise forms.ValidationError("Image size is too large. Please choose a smaller image")
 
-        valid_content_types = ['image/jpg', 'image/jpeg', 'image/png']
-        if image.content_type not in valid_content_types:
-            raise forms.ValidationError("Please choose a valid image file")
+            valid_content_types = ['image/jpg', 'image/jpeg', 'image/png']
+            if image.content_type not in valid_content_types:
+                raise forms.ValidationError("Please choose a valid image file")
         return image
 
     def clean_primary_number(self):
         primary_number = self.cleaned_data.get('primary_number')
         if len(primary_number) != 10:
             raise forms.ValidationError("Primary number should be 10 digits long")
-        return primary_number()
+        return primary_number
     
     def clean_secondary_number(self):
         secondary_number = self.cleaned_data.get('secondary_number')
@@ -154,9 +155,10 @@ class TeacherForm(forms.Form):
         if dob > datetime.date.today():
             raise forms.ValidationError("Date of birth should be less than today")
         return dob
+    
     def clean_address(self):
         address = self.cleaned_data.get('address')
         if len(address) < 10:
             raise forms.ValidationError("Address should be at least 10 characters long")
+        return address
 
-        
